@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/styling.css" />
+</head>
+
+<body>
+
+    <script>
+        guessNum = 1;
+        loggedInUser = null;
+       
+        
+        
+    </script>
+
+    <script src="../static/game.js"></script>
+
+    <script src="../static/users.js"></script>
+
+    <div id="full_page" class="full_page">
+
+        <div id="page_contents" class="page_contents">
+
+            <div id="header" class="header">
+                <h1 id="title">{{ title }}</h1>
+                <div id="user_header">
+                    <input type="text" id="username" placeholder="Enter Username">
+                    <input type="password" id="password" placeholder="Enter Password">
+                    <button id="login_btn" class="user_btn">Log in</button>
+
+                    <input type="text" id="new_username" placeholder="Enter A Username">
+                    <input type="password" id="new_password" placeholder="Enter A Password">
+                    <button id="registration_btn" class="user_btn">Register</button>
+                    <div id="try_again_text" class="try_again_text" hidden>Failure. Please try again!</div>
+                </div>
+                <button id="log_out_btn" class="header_right" hidden> Log Out </button>
+                <button id = "openTMDBDetails" class = "header_left">View Attribution</button>
+
+            </div>
+
+            <div id = "TMDBDetails"  class = "TMDBDetails" hidden>
+                <p>
+                    This site was made possible using TMDB's API.
+                </p>
+                <img id="TMDBLogo" src = "static/TMDB_Logo.jpeg" alt="TMDB Logo">
+                <br>
+                <button id = "closeTMDBDetails" class = "closeTMDBDetails">Close</button>
+            </div>
+
+            <div id="instr" class="instr_window">
+                <h1 class = "instr_heading"> WELCOME TO CAST.LE!! </h1>
+                <p class = "instr_text">
+                    The goal is to guess the film based on the actors. If you don't get it after 5, you get one last shot: The director.  
+                </p>
+                <br>
+                <br>
+                <p class = "instr_text">
+                    Not to give you too much of a hint, but the order of actors means guessing the movie on attempts 1-3 is much more difficult than on 4-6.
+                </p>
+                <div class="close_btn_div">
+                    <button class = "close_instr_btn" id="close_instr_btn"> Close </button>
+                </div>
+            </div>
+
+
+            <div id="hints" class="hints_box">
+                <div id="hint1" class="hint">
+                    <p><strong> Actor 1: </strong></p><br>
+                    <p id="hint_content1">{{ actor1 }}</p>
+                </div>
+                <div id="hint2" class="hint">
+                    <p><strong> Actor 2: </strong></p><br>
+                    <p id="hint_content2" style="background-color: black;">{{ actor2 }}</p>
+                </div>
+                <div id="hint3" class="hint">
+                    <p><strong> Actor 3: </strong></p><br>
+                    <p id="hint_content3" style="background-color: black;">{{ actor3 }}</p>
+                </div>
+                <div id="hint4" class="hint">
+                    <p><strong> Actor 4: </strong></p><br>
+                    <p id="hint_content4" style="background-color: black;">{{ actor4 }}</p>
+                </div>
+                <div id="hint5" class="hint">
+                    <p><strong> Actor 5: </strong></p><br>
+                    <p id="hint_content5" style="background-color: black;">{{ actor5 }}</p>
+                </div>
+                <div id="hint6" class="hint">
+                    <p><strong> Director: </strong></p><br>
+                    <p id="hint_content6" style="background-color: black;">{{ director }}</p>
+                </div>
+            </div>
+
+
+            <div id="search" class="search_box">
+                <input type="text" id="guess_input" class="search_field" placeholder="Input your guess" autofocus>
+                <button id="search_btn"> Submit </button>
+
+                <div id="movie_title" class="movie_title" hidden>
+                    <h1 class="title_text">{{ movieTitle }}</h1>
+                </div>
+            </div>
+
+
+            <div id="guesses" class="guesses_box">
+                <div id="guess1" class="guess_box"></div>
+                <div id="guess2" class="guess_box" hidden></div>
+                <div id="guess3" class="guess_box" hidden></div>
+                <div id="guess4" class="guess_box" hidden></div>
+                <div id="guess5" class="guess_box" hidden></div>
+                <div id="guess6" class="guess_box" hidden></div>
+            </div>
+
+
+            <div id="end_screen" class="end_screen" hidden>
+                
+                <div class="inner_end_screen">
+                    <div id = "sharable_result" hidden></div>
+
+                    <button id = "openMovieDetails">Show Details</button>
+
+                    <div id="wl_screen">
+                        <div id="win_screen" hidden></div>
+                        <div id="loss_screen" hidden>You Lost!</div>
+                    </div>
+
+                    <div id="share_btn_container" class="share_btn_container">
+                        <button id="share_btn"> SHARE </button>
+                    </div>
+
+                    <div id="countdown" class="countdown">
+                        <div id="countdown_text">
+                            <div id="next_movie">Next Movie:</div>
+                            <div id="timer"></div>
+                        </div>
+                    </div>
+
+                    <div id="stats" class="stats" hidden>
+                        <div id="stats_header" class="stats_stats"></div>
+                        <div id="stats_stats" class="stats_stats"></div>
+
+                        <table id="winTable">
+                            <tr>
+                                <th colspan="6">Guess Distribution</th>
+                            </tr>
+                            <tr>
+                                <th>Wins in 1</th>
+                                <th>Wins in 2</th>
+                                <th>Wins in 3</th>
+                                <th>Wins in 4</th>
+                                <th>Wins in 5</th>
+                                <th>Wins in 6</th>
+                            </tr>
+                            <tr>
+                                <th id="winNum1">0</th>
+                                <th id="winNum2">0</th>
+                                <th id="winNum3">0</th>
+                                <th id="winNum4">0</th>
+                                <th id="winNum5">0</th>
+                                <th id="winNum6">0</th>
+                            </tr>
+                        </table>
+
+                        <div id="stats_end_fill"></div>
+                    </div>
+                    
+
+                    <div id = "movieDetails" class = "movieDetails" hidden>
+                        <strong> {{movieTitle}} </strong>
+                        <br>
+                        <i> {{movieDesc}} </i>
+                        <br>
+                        <img id="MoviePoster" src='{{posterPath}}' alt = "image not found">
+                        <br>
+                        <p> If you know and like this movie, try watching: </p>
+                        <ul>
+                            <li>{{movieRecommended1}}</li>
+                            <li>{{movieRecommended2}}</li>
+                            <li>{{movieRecommended3}}</li>
+                        </ul>
+                        <button id = "closeMovieDetails"> Close Details </button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // set up all event listeners for anything on the page
+
+        $("#search_btn").click(submitGuess);
+        $( "#guess_input" ).keyup( function(event) {
+            if(event.which === 13) {
+                $("#search_btn").click();
+            }
+        });
+        $("#close_instr_btn").click(hideInstructions);
+        $("#openMovieDetails").click(showMovieDetails);
+        $("#closeMovieDetails").click(hideMovieDetails);
+        $("#openTMDBDetails").click(showTMDBDetails);
+        $("#closeTMDBDetails").click(hideTMDBDetails);
+        $("#login_btn").click(logInUser);
+        $("#registration_btn").click(registerUser);
+        $("#log_out_btn").click(logOut);
+        $("#share_btn").click(shareResult);
+        setInterval(updateTimer, 100);
+        $("#winsIn1Btn").click(alertWinsIn1);
+        $("#winsIn2Btn").click(alertWinsIn2);
+        $("#winsIn3Btn").click(alertWinsIn3);
+        $("#winsIn4Btn").click(alertWinsIn4);
+        $("#winsIn5Btn").click(alertWinsIn5);
+        $("#winsIn6Btn").click(alertWinsIn6);
+        
+
+    </script>
+    <br> 
+    <br>
+    <br>
+    <br>
+    <button value = "Alert Wins in 1" id = "winsIn1Btn"></button>
+    <br>
+    <button value = "Alert Wins in 2" id = "winsIn2Btn"></button>
+    <br>
+    <button value = "Alert Wins in 3" id = "winsIn3Btn"></button>
+    <br>
+    <button value = "Alert Wins in 4" id = "winsIn4Btn"></button>
+    <br>
+    <button value = "Alert Wins in 5" id = "winsIn5Btn"></button>
+    <br>
+    <button value = "Alert Wins in 6" id = "winsIn6Btn"></button>
+
+
+</body>
+
+</html>
